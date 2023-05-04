@@ -74,7 +74,7 @@ export default function Friend({ friendId, name, subtitle, userPicturePath }) {
         theme="light"
       />
 
-      <FlexBetween>
+      <FlexBetween my="0.5rem">
         <FlexBetween gap="1rem">
           <UserImage image={userPicturePath} size="55px" />
           <Box

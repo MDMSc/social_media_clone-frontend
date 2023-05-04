@@ -6,6 +6,7 @@ import {
   InputBase,
   MenuItem,
   MenuList,
+  Modal,
   Select,
   Typography,
   useMediaQuery,
@@ -38,6 +39,7 @@ export default function Navbar() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
+  const [openSearch, setOpenSearch] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -191,7 +193,10 @@ export default function Navbar() {
                 </IconButton>
               </Box>
               {searchLoading ? (
-                <CircularProgress size="2rem" sx={{display: "flex", alignSelf: "center", m: "1rem"}} />
+                <CircularProgress
+                  size="2rem"
+                  sx={{ display: "flex", alignSelf: "center", m: "1rem" }}
+                />
               ) : searchResults.length > 0 ? (
                 searchResults.map((res) => (
                   <Friend
@@ -248,10 +253,17 @@ export default function Navbar() {
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  logout()
+                  logout();
                 }}
               >
-                {logoutLoading ? <CircularProgress size="2rem" sx={{display: "flex", alignSelf: "center"}} /> : "Logout"}
+                {logoutLoading ? (
+                  <CircularProgress
+                    size="2rem"
+                    sx={{ display: "flex", alignSelf: "center" }}
+                  />
+                ) : (
+                  "Logout"
+                )}
               </MenuItem>
             </Select>
           </FormControl>
@@ -290,6 +302,10 @@ export default function Navbar() {
             alignItems="center"
             gap="3rem"
           >
+            <IconButton onClick={() => setOpenSearch(true)}>
+              <Search fontSize="large" sx={{ color: "black" }} />
+            </IconButton>
+
             <IconButton
               onClick={() => dispatch(setMode())}
               sx={{ fontSize: "25px" }}
@@ -300,9 +316,11 @@ export default function Navbar() {
                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
               )}
             </IconButton>
+
             <Message sx={{ fontSize: "25px" }} />
             <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />
+
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}
@@ -330,13 +348,100 @@ export default function Navbar() {
                     logout();
                   }}
                 >
-                  {logoutLoading ? <CircularProgress size="2rem" sx={{display: "flex", alignSelf: "center"}} /> : "Logout"}
+                  {logoutLoading ? (
+                    <CircularProgress
+                      size="2rem"
+                      sx={{ display: "flex", alignSelf: "center" }}
+                    />
+                  ) : (
+                    "Logout"
+                  )}
                 </MenuItem>
               </Select>
             </FormControl>
           </FlexBetween>
         </Box>
       )}
+
+      <Modal
+        open={openSearch}
+        onClose={() => {
+          setOpenSearch(false);
+          setSearch("");
+        }}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "35rem",
+            height: "25rem",
+            backgroundColor: alt,
+            padding: "1rem 6%",
+            borderRadius: "3rem",
+          }}
+        >
+          <FlexBetween
+            backgroundColor={neutralLight}
+            borderRadius="9px"
+            gap="3rem"
+            padding="0.1rem 1.5rem"
+          >
+            <InputBase
+              placeholder="Search..."
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <IconButton>
+              <Search />
+            </IconButton>
+          </FlexBetween>
+
+          <MenuList
+            sx={{
+              backgroundColor: theme.palette.background.alt,
+              borderRadius: "1rem",
+              display: Boolean(search) ? "flex" : "none",
+              flexDirection: "column",
+              p: "1rem",
+              mt: "0.5rem",
+              overflowY: "scroll",
+            }}
+          >
+            <Box display="flex" justifyContent="flex-end">
+              <IconButton onClick={() => setSearch("")}>
+                <Close />
+              </IconButton>
+            </Box>
+            {searchLoading ? (
+              <CircularProgress
+                size="2rem"
+                sx={{ display: "flex", alignSelf: "center", m: "1rem" }}
+              />
+            ) : searchResults.length > 0 ? (
+              searchResults.map((res) => (
+                <Friend
+                  key={res._id}
+                  friendId={res._id}
+                  name={`${res.firstName} ${res.lastName}`}
+                  subtitle={res.occupation}
+                  userPicturePath={res.picturePath}
+                />
+              ))
+            ) : (
+              <Typography
+                sx={{
+                  color: theme.palette.neutral.medium,
+                  display: "flex",
+                  alignSelf: "center",
+                }}
+              >
+                No results...
+              </Typography>
+            )}
+          </MenuList>
+        </Box>
+      </Modal>
     </FlexBetween>
   );
 }
