@@ -1,6 +1,6 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, CircularProgress, Typography, useTheme } from "@mui/material";
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { API_USER } from "../../Global";
@@ -11,6 +11,8 @@ import WidgetWrapper from "../../components/WidgetWrapper";
 import Friend from "../../components/Friend";
 
 export default function FriendListWidget({ userId }) {
+  const [listLoading, setListLoading] = useState(false);
+
   const dispatch = useDispatch();
   const { palette } = useTheme();
   const navigate = useNavigate();
@@ -18,6 +20,7 @@ export default function FriendListWidget({ userId }) {
   const friends = useSelector((state) => state.user.friends);
 
   const getFriends = () => {
+    setListLoading(true);
     axios
       .get(`${API_USER}/friendList/${userId}`, {
         headers: {
@@ -31,11 +34,13 @@ export default function FriendListWidget({ userId }) {
             friends: response.data,
           })
         );
+        setListLoading(false);
       })
       .catch((error) => {
         toast.error(
           error.response.data ? error.response.data.message : error.message
         );
+        setListLoading(false);
 
         if (error.response && error.response.status === 403) {
           dispatch(setLogout());
@@ -78,7 +83,12 @@ export default function FriendListWidget({ userId }) {
         </Typography>
 
         <Box display="flex" flexDirection="column" gap="0.5rem">
-          {friends.length > 0 ? (
+          {listLoading ? (
+            <CircularProgress
+              size="2rem"
+              sx={{ display: "flex", alignSelf: "center", m: "1rem" }}
+            />
+          ) : friends.length > 0 ? (
             friends.map((friend, i) => (
               <Friend
                 key={i}
@@ -89,9 +99,10 @@ export default function FriendListWidget({ userId }) {
               />
             ))
           ) : (
-            <Typography sx={{mb: "1rem", color: palette.neutral.medium}}>No friends yet</Typography>
-          )
-        }
+            <Typography sx={{ mb: "1rem", color: palette.neutral.medium }}>
+              No friends yet
+            </Typography>
+          )}
         </Box>
       </WidgetWrapper>
     </>

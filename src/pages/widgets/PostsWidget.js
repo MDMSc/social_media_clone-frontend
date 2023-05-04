@@ -106,15 +106,13 @@ export default function PostsWidget({ userId, isProfile = false }) {
       />
 
       {feedPostLoading ? (
-        <Box 
+        <Box
           display="flex"
           justifyContent="center"
           alignItems="center"
           m="2rem"
         >
-        <CircularProgress
-          size="5rem"
-        />
+          <CircularProgress size="5rem" />
         </Box>
       ) : (
         posts.length > 0 &&

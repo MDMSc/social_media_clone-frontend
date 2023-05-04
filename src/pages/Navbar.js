@@ -183,8 +183,9 @@ export default function Navbar() {
                 display: Boolean(search) ? "flex" : "none",
                 flexDirection: "column",
                 p: "1rem",
-                mt: "0.5rem",
+                m: "0.5rem",
                 overflowY: "scroll",
+                scrollbarWidth: "none"
               }}
             >
               <Box display="flex" justifyContent="flex-end">
@@ -404,8 +405,9 @@ export default function Navbar() {
               display: Boolean(search) ? "flex" : "none",
               flexDirection: "column",
               p: "1rem",
-              mt: "0.5rem",
+              m: "0.5rem",
               overflowY: "scroll",
+              scrollbarWidth: "none"
             }}
           >
             <Box display="flex" justifyContent="flex-end">
