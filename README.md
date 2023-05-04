@@ -1,3 +1,16 @@
+# Social Media Clone Frontend
+
+This is the frontend code for social media clone project.
+
+# Deployed links
+
+Deployed frontend link- https://sm-clone.netlify.app/ \
+Deployed backend link- https://api-sm-clone.onrender.com/
+
+# Upcoming features
+
+Other multimedia posts upload, real-time notifications, real-time messaging
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
