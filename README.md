@@ -9,7 +9,9 @@ Deployed backend link- https://api-sm-clone.onrender.com/
 
 # Upcoming features
 
-Other multimedia posts upload, real-time notifications, real-time messaging
+1. Other multimedia posts upload, /
+2. Real-time notifications, /
+3. Real-time messaging
 
 # Getting Started with Create React App
 
