@@ -390,7 +390,7 @@ export default function Form() {
                 }}
               >
                 <sup>*</sup>For default login credentials, click the 'LOGIN'
-                button without any values.
+                button without any values
               </Typography>
               <Typography
                 onClick={() => {
