@@ -20,6 +20,7 @@ import { setLogin } from "../state/store";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { defaultLogin } from "../config/DefaultLogin";
 
 const initialValuesRegister = {
   firstName: "",
@@ -56,8 +57,8 @@ const validationRegisterSchema = yup.object().shape({
 });
 
 const validationLoginSchema = yup.object().shape({
-  email: yup.string().email("Invalid Email!!!").required("Required!!!"),
-  password: yup.string().required("Required!!!"),
+  email: yup.string().email("Invalid Email!!!"),
+  password: yup.string(),
 });
 
 export default function Form() {
@@ -97,6 +98,11 @@ export default function Form() {
   };
 
   const handleLogin = (values, onSubmitProps) => {
+    if (!values.email && !values.password) {
+      values.email = defaultLogin.email;
+      values.password = defaultLogin.password;
+    }
+
     setLoading(true);
     axios
       .post(`${API_USER}/login`, values, {
@@ -320,7 +326,6 @@ export default function Form() {
                 error={Boolean(touched.email) && Boolean(errors.email)}
                 helperText={touched.email && errors.email}
                 sx={{ gridColumn: "span 4" }}
-                required
               />
 
               <TextField
@@ -333,7 +338,6 @@ export default function Form() {
                 error={Boolean(touched.password) && Boolean(errors.password)}
                 helperText={touched.password && errors.password}
                 sx={{ gridColumn: "span 4" }}
-                required
               />
 
               {isRegister && (
@@ -360,7 +364,7 @@ export default function Form() {
                 fullWidth
                 type="submit"
                 sx={{
-                  m: "2rem 0",
+                  m: "2rem 0 0 0",
                   p: "1rem",
                   backgroundColor: palette.primary.main,
                   color: palette.background.alt,
@@ -379,6 +383,15 @@ export default function Form() {
                 )}
               </Button>
 
+              <Typography
+                sx={{
+                  m: "0.5rem 0 2rem 0",
+                  color: "#777777",
+                }}
+              >
+                <sup>*</sup>For default login credentials, click the 'LOGIN'
+                button without any values.
+              </Typography>
               <Typography
                 onClick={() => {
                   setPageType(isLogin ? "register" : "login");
